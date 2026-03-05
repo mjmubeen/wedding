@@ -682,17 +682,17 @@ body::after{
         <div class="cal-d">8</div><div class="cal-d">9</div><div class="cal-d">10</div><div class="cal-d">11</div><div class="cal-d">12</div><div class="cal-d">13</div><div class="cal-d">14</div>
         <div class="cal-d">15</div><div class="cal-d">16</div><div class="cal-d">17</div><div class="cal-d">18</div><div class="cal-d">19</div><div class="cal-d">20</div><div class="cal-d">21</div>
         <div class="cal-d">22</div><div class="cal-d">23</div><div class="cal-d">24</div>
-        <div class="cal-d ev" title="Nikkah">25</div>
+        <div class="cal-d ev" id="cal-25" title="Nikkah">25</div>
         <div class="cal-d">26</div><div class="cal-d">27</div>
-        <div class="cal-d ev" title="Barat">28</div>
-        <div class="cal-d hl" title="Walima">29</div>
+        <div class="cal-d ev" id="cal-28" title="Barat">28</div>
+        <div class="cal-d hl" id="cal-29" title="Walima">29</div>
         <div class="cal-d">30</div><div class="cal-d">31</div>
         <div class="cal-d"></div><div class="cal-d"></div><div class="cal-d"></div><div class="cal-d"></div>
       </div>
       <div class="cal-legend">
-        <span>● 25 — Nikkah</span>
-        <span>● 28 — Barat</span>
-        <span>◉ 29 — Walima</span>
+        <span id="leg-nikkah">● 25 — Nikkah</span>
+        <span id="leg-barat">● 28 — Barat</span>
+        <span id="leg-walima">◉ 29 — Walima</span>
       </div>
     </div>
   </div>
@@ -790,6 +790,22 @@ if(anyFilter){
 if(showNikkah!=="1" && anyFilter){
   const cd = document.getElementById("section-countdown");
   if(cd) cd.style.display = "none";
+}
+
+// Calendar — hide dates & legend items guest is not invited to
+if(anyFilter){
+  if(showNikkah!=="1"){
+    const d=document.getElementById("cal-25"); if(d){ d.classList.remove("ev"); d.style.opacity="0.2"; }
+    const l=document.getElementById("leg-nikkah"); if(l) l.style.display="none";
+  }
+  if(showBarat!=="1"){
+    const d=document.getElementById("cal-28"); if(d){ d.classList.remove("ev"); d.style.opacity="0.2"; }
+    const l=document.getElementById("leg-barat"); if(l) l.style.display="none";
+  }
+  if(showWalima!=="1"){
+    const d=document.getElementById("cal-29"); if(d){ d.classList.remove("ev","hl"); d.style.opacity="0.2"; d.style.background="none"; d.style.border="none"; d.style.color="var(--blush)"; }
+    const l=document.getElementById("leg-walima"); if(l) l.style.display="none";
+  }
 }
 
 /* ── LETTER-BY-LETTER NAMES ── */
