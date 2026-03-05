@@ -733,22 +733,37 @@ body::after{
 function decodeGuest(){
   const url = new URL(location.href);
 
-  // Mode 2: encoded ?g= param
+  // Mode 2: encoded ?g= param (from link generator)
   const encoded = url.searchParams.get("g");
   if(encoded){
     try{
       const decoded = JSON.parse(atob(encoded));
+      // Save to sessionStorage so refresh works
+      sessionStorage.setItem('weddingGuest', JSON.stringify(decoded));
       return decoded;
     } catch(e){}
   }
 
   // Mode 1: plain params
-  return {
+  const plain = {
     name:   url.searchParams.get("name"),
     nikkah: url.searchParams.get("nikkah"),
     barat:  url.searchParams.get("barat"),
     walima: url.searchParams.get("walima"),
   };
+  if(plain.name || plain.nikkah || plain.barat || plain.walima){
+    sessionStorage.setItem('weddingGuest', JSON.stringify(plain));
+    return plain;
+  }
+
+  // Mode 3: no URL params — check sessionStorage (handles refresh)
+  const saved = sessionStorage.getItem('weddingGuest');
+  if(saved){
+    try{ return JSON.parse(saved); } catch(e){}
+  }
+
+  // No guest data at all — show everything
+  return { name: null, nikkah: null, barat: null, walima: null };
 }
 
 const guest = decodeGuest();
